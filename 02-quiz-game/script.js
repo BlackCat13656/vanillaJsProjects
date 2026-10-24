@@ -116,10 +116,38 @@ function restartQuiz() {
 
 function selectAnswer(e) {
   if (answersDisabled) return;
+
   answersDisabled = true;
+
   const selectedButton = e.target;
   const isCorrect = selectedButton.dataset.correct === "true";
+
+  Array.from(answersContainer.children).forEach((button) => {
+    if (button.dataset.correct === "true") {
+      button.classList.add("correct");
+    } else {
+      button.classList.add("incorrect");
+    }
+  });
+
+  if (isCorrect) {
+    score++;
+    scoreSpan.textContent = score;
+  }
+
+  setTimeout(() => {
+    currentQuestionIndex++;
+
+    // check if there are more questions or the quiz is over
+    if (currentQuestionIndex < quizQuestions.length) {
+      showQuestion();
+    } else {
+      showResults();
+    }
+  }, 1000);
 }
+
+function showResults() {}
 
 // event listeners
 startButton.addEventListener("click", startQuiz);
